@@ -1,21 +1,40 @@
-using System.Diagnostics;
 using AssignmentPro.Models;
+using AssignmentPro.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Threading;
 
 namespace AssignmentPro.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IJobRepository jobRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IJobRepository jobRepository)
         {
             _logger = logger;
+            this.jobRepository = jobRepository;
         }
 
-        public IActionResult Index()
+        public async Task< IActionResult> Index(CancellationToken cancellationToken)
         {
-            return View();
+            var data = await jobRepository.GetAllJobAsync(cancellationToken);
+
+            return View(data);
+        }
+
+        
+        [HttpGet]
+        public async Task<IActionResult> Details(string id, CancellationToken cancellationToken)
+        {
+            var data = await jobRepository.GetJobByIdAsync(id, cancellationToken);
+            if (data != null)
+            {
+                return View(data);
+            }
+            return NotFound();
         }
 
         public IActionResult Privacy()
