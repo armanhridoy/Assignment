@@ -29,22 +29,22 @@ public class AuthService : IAuthService
         var user = new User
         {
             //UserName = request.Email,
-            FullName = request.FullName,
+            //FullName = request.FullName,
             Email = request.Email,
             Phone = request.PhoneNumber,
             EmailConfirmed = true, // Set to true if you want to skip email confirmation for this example
             SecurityStamp = Guid.NewGuid().ToString(),
            
         };
-        var result = await _userManager.CreateAsync(user, request.Password);
-        if (!result.Succeeded)
-        {
-            return new RegistrationResponse
-            {
-                Success = false,
-                Errors = result.Errors.Select(e => e.Description).ToList()
-            };
-        }
+        //var result = await _userManager.CreateAsync(user, request.Password);
+        //if (!result.Succeeded)
+        //{
+        //    return new RegistrationResponse
+        //    {
+        //        Success = false,
+        //        Errors = result.Errors.Select(e => e.Description).ToList()
+        //    };
+        //}
         await _userManager.AddToRoleAsync(user, "User"); // Assign default role if needed
 
         return new RegistrationResponse

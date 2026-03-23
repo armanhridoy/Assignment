@@ -1,374 +1,141 @@
-﻿@model AssignmentPro.Models.Auth.RegisterViewModel
-@{
-    Layout = null;
-}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
+﻿@using AssignmentPro.Models.Auth
+@model RegisterViewModel
 <style>
-    :root {
-        --primary-teal: #007c89;
-        --primary-teal-dark: #006471;
-        --primary-teal-light: rgba(0, 124, 137, 0.12);
-        --text-dark: #2d3748;
-        --text-muted: #718096;
-        --border-light: #cbd5e1;
-    }
-
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        min-height: 100vh;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+        font-family: 'Segoe UI';
+        color: #fff;
     }
 
-    .register-wrapper {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        padding: 2.5rem 1rem;
+    .form-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: rgba(255,255,255,0.05);
+        padding: 30px;
+        border-radius: 20px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
-    .register-card {
-        background: #ffffff;
-        border-radius: 16px;
-        border: none;
-        box-shadow: 0 10px 38px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        transition: all 0.3s ease;
-    }
-
-        .register-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-        }
-
-    .register-header {
-        background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
-        padding: 2.75rem 2rem;
+    .title {
         text-align: center;
-        color: white;
-        position: relative;
+        font-size: 28px;
+        margin-bottom: 25px;
+        font-weight: bold;
+        color: #00f2fe;
     }
 
-        .register-header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .register-header h2 {
-            font-weight: 700;
-            font-size: 2.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .register-header p {
-            opacity: 0.92;
-            font-size: 1rem;
-            margin: 0;
-        }
-
-    .register-body {
-        padding: 2.5rem 2.25rem;
-    }
-
-    .form-label {
-        font-weight: 600;
-        color: var(--text-dark);
-        margin-bottom: 0.6rem;
-        font-size: 0.95rem;
-    }
-
-    .input-group-custom {
-        position: relative;
-        margin-bottom: 1.9rem;
-    }
-
-    .form-control-custom {
-        padding: 0.82rem 1rem 0.82rem 3.1rem;
-        border: 1px solid var(--border-light);
-        border-radius: 10px;
-        font-size: 0.97rem;
-        transition: all 0.25s ease;
-        background: #fdfefe;
-    }
-
-        .form-control-custom:focus {
-            border-color: var(--primary-teal);
-            box-shadow: 0 0 0 4px var(--primary-teal-light);
-            background: white;
-        }
-
-        .form-control-custom::placeholder {
-            color: #a0aec0;
-        }
-
-    .input-icon {
-        position: absolute;
-        left: 1.1rem;
-        top: 70%;
-        transform: translateY(-50%);
-        color: var(--primary-teal);
-        font-size: 1.15rem;
-        pointer-events: none;
-    }
-
-    /* --CHeck-- */
-
-    .input-icon-o{
-        position: absolute;
-        left: 1.1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--primary-teal);
-        font-size: 1.15rem;
-        pointer-events: none;
-    }
-
-    .password-toggle {
-        position: absolute;
-        right: 1.1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
+    .form-control {
+        background: rgba(255,255,255,0.08);
         border: none;
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        cursor: pointer;
-        padding: 0.4rem;
-        transition: color 0.2s;
+        color: #fff;
     }
 
-        .password-toggle:hover {
-            color: var(--primary-teal);
+        .form-control::placeholder {
+            color: #ccc;
         }
 
-    .password-strength {
-        margin-top: 0.7rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
+        .form-control:focus {
+            box-shadow: none;
+            border: 1px solid #00f2fe;
+        }
+
+    label {
+        margin-top: 10px;
+        font-size: 14px;
     }
 
-    .strength-meter {
-        height: 5px;
-        background: #e2e8f0;
-        border-radius: 3px;
-        overflow: hidden;
-    }
-
-    .strength-fill {
-        height: 100%;
-        width: 0%;
-        transition: width 0.4s ease, background-color 0.4s ease;
-    }
-
-    .strength-text {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        text-align: right;
-    }
-
-    .btn-register {
-        background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
-        border: none;
-        padding: 0.9rem 1.5rem;
-        font-weight: 600;
-        font-size: 1.02rem;
-        border-radius: 10px;
-        color: white;
-        transition: all 0.3s ease;
+    .btn-submit {
+        margin-top: 20px;
         width: 100%;
-        margin-top: 0.8rem;
+        padding: 12px;
+        border-radius: 12px;
+        background: linear-gradient(45deg,#00f2fe,#4facfe);
+        border: none;
+        font-weight: bold;
+        color: #000;
+        transition: 0.3s;
     }
 
-        .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 124, 137, 0.28);
+        .btn-submit:hover {
+            background: linear-gradient(45deg,#7367f0,#00f2fe);
+            color: #fff;
         }
-
-    .login-link {
-        text-align: center;
-        margin-top: 1.8rem;
-        color: var(--text-muted);
-        font-size: 0.95rem;
-    }
-
-        .login-link a {
-            color: var(--primary-teal);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-            .login-link a:hover {
-                color: var(--primary-teal-dark);
-                text-decoration: underline;
-            }
-
-    .validation-feedback {
-        font-size: 0.86rem;
-        margin-top: 0.35rem;
-        color: #e53e3e;
-        display: block;
-    }
-
-    @@media (max-width: 576px) {
-        .register-body, .register-header
-
-    {
-        padding-left: 1.6rem;
-        padding-right: 1.6rem;
-    }
-
-    .register-header h2 {
-        font-size: 1.85rem;
-    }
-
-    }
 </style>
 
-<div class="register-wrapper">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6 col-xl-5">
-                <div class="register-card">
-                    <div class="register-header">
-                        <h2>Create Account</h2>
-                        <p>Join AssignmentPro and start your journey</p>
-                    </div>
+<div class="form-container">
 
-                    <div class="register-body">
-                        <form asp-controller="Account" asp-action="Register" method="post" novalidate>
-                            <!-- Full Name -->
-                            <div class="input-group-custom">
-                                <label asp-for="FullName" class="form-label">Full Name</label>
-                                <span class="input-icon"><i class="bi bi-person-fill"></i></span>
-                                <input asp-for="FullName" class="form-control form-control-custom" placeholder="Your full name" required />
-                                <span asp-validation-for="FullName" class="validation-feedback"></span>
-                            </div>
+    <div class="title">🚀 Create Your Account</div>
 
-                            <!-- Email -->
-                            <div class="input-group-custom">
-                                <label asp-for="Email" class="form-label">Email Address</label>
-                                <span class="input-icon"><i class="bi bi-envelope-fill"></i></span>
-                                <input asp-for="Email" type="email" class="form-control form-control-custom" placeholder="you@example.com" required />
-                                <span asp-validation-for="Email" class="validation-feedback"></span>
-                            </div>
+    <form asp-action="Register" method="post" enctype="multipart/form-data">
 
-                            <!-- Phone -->
-                            <div class="input-group-custom">
-                                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                                <span class="input-icon"><i class="bi bi-telephone-fill"></i></span>
-                                <input asp-for="PhoneNumber" class="form-control form-control-custom" placeholder="+880 1X XXX XXXX" />
-                                <span asp-validation-for="PhoneNumber" class="validation-feedback"></span>
-                            </div>
+        <div class="row">
 
-                            <!-- Password -->
-                            <div class="input-group-custom">
-                                <label asp-for="Password" class="form-label">Password</label>
-                                <span class="input-icon-o"><i class="bi bi-lock-fill"></i></span> @* //Check *@
-                                <input asp-for="Password" type="password" id="password" class="form-control form-control-custom"
-                                       placeholder="Minimum 8 characters" minlength="8" required />
-                                <button type="button" class="password-toggle" id="togglePassword">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <div class="password-strength">
-                                    <div class="strength-meter">
-                                        <div class="strength-fill" id="strengthFill"></div>
-                                    </div>
-                                    <div class="strength-text" id="strengthText">Password strength</div>
-                                </div>
-                                <span asp-validation-for="Password" class="validation-feedback" id="passwordFeedback"></span>
-                            </div>
-
-                            <!-- Confirm Password -->
-                            <div class="input-group-custom">
-                                <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
-                                <span class="input-icon"><i class="bi bi-lock-fill"></i></span>
-                                <input asp-for="ConfirmPassword" type="password" class="form-control form-control-custom"
-                                       placeholder="Confirm password" required />
-                                <span asp-validation-for="ConfirmPassword" class="validation-feedback" id="confirmFeedback"></span>
-                            </div>
-
-                            <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-register">
-                                    <i class="bi bi-person-plus me-2"></i> Create Account
-                                </button>
-                            </div>
-
-                            <div class="login-link">
-                                Already have an account? <a asp-controller="Account" asp-action="Login">Sign In</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <!-- Name -->
+            <div class="col-md-6">
+                <label>Full Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter your name" />
             </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+                <label>Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+            </div>
+
+            <!-- Password -->
+            <div class="col-md-6">
+                <label>Password</label>
+                <input type="password" name="Password" class="form-control" placeholder="Enter password" />
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6">
+                <label>Phone</label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Phone number" />
+            </div>
+
+            <!-- Salary -->
+            <div class="col-md-6">
+                <label>Present Salary</label>
+                <input asp-for="PresentSalary" class="form-control" placeholder="e.g. 30000" />
+            </div>
+
+            <!-- Degree -->
+            <div class="col-md-6">
+                <label>Degree</label>
+                <input asp-for="Degree" class="form-control" placeholder="BSc / MSc" />
+            </div>
+
+            <!-- University -->
+            <div class="col-md-6">
+                <label>University</label>
+                <input asp-for="University" class="form-control" placeholder="Your university" />
+            </div>
+
+            <!-- CGPA -->
+            <div class="col-md-6">
+                <label>CGPA</label>
+                <input asp-for="CGPA" class="form-control" placeholder="e.g. 3.50" />
+            </div>
+
+            <!-- Completion Year -->
+            <div class="col-md-6">
+                <label>Completion Year</label>
+                <input asp-for="CompletionYear" class="form-control" placeholder="2024" />
+            </div>
+
+            <!-- Resume Upload -->
+            <div class="col-md-6">
+                <label>Upload Resume (PDF)</label>
+                <input type="file" name="ResumeFile" class="form-control" accept="application/pdf" />
+            </div>
+
         </div>
-    </div>
+
+        <button type="submit" class="btn-submit">Create Account</button>
+
+    </form>
+
 </div>
 
-<script>
-    // Password visibility toggle
-    document.getElementById('togglePassword')?.addEventListener('click', function () {
-        const password = document.getElementById('password');
-        const icon = this.querySelector('i');
-        if (password.type === 'password') {
-            password.type = 'text';
-            icon.classList.replace('bi-eye', 'bi-eye-slash');
-        } else {
-            password.type = 'password';
-            icon.classList.replace('bi-eye-slash', 'bi-eye');
-        }
-    });
-
-    // Password strength & match checking
-    const passwordInput = document.getElementById('password');
-    const confirmInput = document.querySelector('input[asp-for="ConfirmPassword"]');
-    const strengthFill = document.getElementById('strengthFill');
-    const strengthText = document.getElementById('strengthText');
-    const confirmFeedback = document.getElementById('confirmFeedback');
-
-    function updateStrength() {
-        const val = passwordInput.value;
-        let score = 0;
-
-        if (val.length >= 8) score += 25;
-        if (/[A-Z]/.test(val)) score += 25;
-        if (/[0-9]/.test(val)) score += 25;
-        if (/[^A-Za-z0-9]/.test(val)) score += 25;
-
-        strengthFill.style.width = score + '%';
-
-        if (score <= 25) {
-            strengthFill.style.background = '#dc3545';
-            strengthText.textContent = 'Weak';
-        } else if (score <= 50) {
-            strengthFill.style.background = '#fd7e14';
-            strengthText.textContent = 'Fair';
-        } else if (score <= 75) {
-            strengthFill.style.background = '#ffc107';
-            strengthText.textContent = 'Good';
-        } else {
-            strengthFill.style.background = '#28a745';
-            strengthText.textContent = 'Strong';
-        }
-
-        // Check password match
-        if (confirmInput.value) {
-            if (confirmInput.value !== val) {
-                confirmFeedback.textContent = "Passwords do not match";
-            } else {
-                confirmFeedback.textContent = "";
-            }
-        }
-    }
-
-    passwordInput?.addEventListener('input', updateStrength);
-    confirmInput?.addEventListener('input', updateStrength);
-</script>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
