@@ -98,7 +98,10 @@
                 🕒 Posted: @job.CreatedAt.ToString("dd MMM yyyy")
             </div>
 
-            <a href="/home/Details/@job.JobID" class="btn">View Details</a>
+        @if (@job.Status == "Active")
+            {
+                <a href="/home/Details/@job.JobID" class="btn">View Details</a>
+            }
 
         </div>
         }
