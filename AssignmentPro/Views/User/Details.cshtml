@@ -1,0 +1,59 @@
+﻿@model AssignmentPro.Models.User
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1>User Details</h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>User ID</th>
+        <td>@Model.UserID</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>@Model.Email</td>
+    </tr>
+    <tr>
+        <th>Phone</th>
+        <td>@Model.PhoneNumber</td>
+    </tr>
+    <tr>
+        <th>Present Salary</th>
+        <td>@(Model.PresentSalary.HasValue? Model.PresentSalary.Value.ToString("0.00") : "-")</td>
+    </tr>
+    <tr>
+        <th>Degree</th>
+        <td>@Model.Degree</td>
+    </tr>
+    <tr>
+        <th>University</th>
+        <td>@Model.University</td>
+    </tr>
+    <tr>
+        <th>CGPA</th>
+        <td>@(Model.CGPA.HasValue? Model.CGPA.Value.ToString("0.00") : "-")</td>
+    </tr>
+    <tr>
+        <th>Completion Year</th>
+        <td>@(Model.CompletionYear.HasValue? Model.CompletionYear.Value.ToString() : "-")</td>
+    </tr>
+    <tr>
+        <th>Resume Path</th>
+        <td>@Model.ResumePath</td>
+    </tr>
+    <tr>
+        <th>Created At</th>
+        <td>@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+    </tr>
+</table>
+
+<p>
+    <a asp-action="CreateOrEdit" asp-route-id="@Model.UserID" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</p>

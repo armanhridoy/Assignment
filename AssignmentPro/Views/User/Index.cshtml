@@ -1,0 +1,60 @@
+﻿@model IEnumerable<AssignmentPro.Models.User>
+
+@{
+    ViewData["Title"] = "Users List";
+}
+
+<h1>Users List</h1>
+
+<p>
+    <a asp-action="CreateOrEdit" class="btn btn-success">Add New User</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>PasswordHash</th>
+            <th>Phone</th>
+            <th>Salary</th>
+            <th>Degree</th>
+            <th>University</th>
+            <th>CGPA</th>
+            <th>Year</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserID</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.PasswordHash</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@(user.PresentSalary.HasValue? user.PresentSalary.Value.ToString("0.00") : "-")</td>
+                    <td>@user.Degree</td>
+                    <td>@user.University</td>
+                    <td>@(user.CGPA.HasValue? user.CGPA.Value.ToString("0.00") : "-")</td>
+                    <td>@(user.CompletionYear.HasValue? user.CompletionYear.Value.ToString() : "-")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@user.UserID" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="CreateOrEdit" asp-route-id="@user.UserID" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@user.UserID" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete this user?');">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="10" class="text-center">No users found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,57 @@
+﻿@model AssignmentPro.Models.Job
+
+@{
+    ViewData["Title"] = "Create / Edit Job";
+}
+
+<div class="container mt-4">
+
+    <h2>Create / Edit Job</h2>
+
+    <form asp-action="CreateOrEdit" method="post">
+
+        <input type="hidden" asp-for="JobID" />
+
+        <div class="mb-3">
+            <label class="form-label">Job Title</label>
+            <input asp-for="JobTitle" class="form-control" />
+            <span asp-validation-for="JobTitle" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Salary Range</label>
+            <input asp-for="SalaryRange" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Deadline</label>
+            <input asp-for="Deadline" type="date" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+
+            <select asp-for="Status" class="form-select">
+
+                <option value="Active">Active</option>
+                <option value="Closed">Closed</option>
+
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Save
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>

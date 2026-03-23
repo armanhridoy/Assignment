@@ -1,0 +1,61 @@
+﻿@model AssignmentPro.Models.Job
+
+@{
+    ViewData["Title"] = "Job Details";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4>Job Details</h4>
+        </div>
+
+        <div class="card-body">
+
+            <dl class="row">
+
+                <dt class="col-sm-3">Job ID</dt>
+                <dd class="col-sm-9">@Model.JobID</dd>
+
+                <dt class="col-sm-3">Job Title</dt>
+                <dd class="col-sm-9">@Model.JobTitle</dd>
+
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+
+                <dt class="col-sm-3">Salary</dt>
+                <dd class="col-sm-9">@Model.SalaryRange</dd>
+
+                <dt class="col-sm-3">Deadline</dt>
+                <dd class="col-sm-9">@Model.Deadline?.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">@Model.Status</dd>
+
+                <dt class="col-sm-3">Created</dt>
+                <dd class="col-sm-9">@Model.CreatedAt</dd>
+
+            </dl>
+
+        </div>
+
+        <div class="card-footer">
+
+            <a asp-action="CreateOrEdit"
+               asp-route-id="@Model.JobID"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
