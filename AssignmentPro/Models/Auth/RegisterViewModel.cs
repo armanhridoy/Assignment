@@ -5,9 +5,7 @@ namespace AssignmentPro.Models.Auth;
 
 public class RegisterViewModel
 {
-    [Key]
-    [StringLength(12)]
-    [DatabaseGenerated(DatabaseGeneratedOption.None)] // important: EF does NOT generate
+  
     public string UserID { get; set; }
 
     [Required]

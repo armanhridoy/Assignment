@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AssignmentPro.Models;
 
 public class Job
-{  
+{
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.None)] // important: EF does NOT generate
+    public long Id { get; set; }
     [StringLength(12)]
     public string JobID { get; set; }
 

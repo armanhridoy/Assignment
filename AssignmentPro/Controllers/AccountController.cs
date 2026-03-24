@@ -3,7 +3,7 @@ using AssignmentPro.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static AssignmentPro.Auth_IdentityModel.IdentityModel;
+using static AssignmentPro.AuthIdentityModel.IdentityModel;
 
 namespace AssignmentPro.Controllers
 {

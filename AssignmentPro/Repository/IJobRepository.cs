@@ -1,5 +1,4 @@
-﻿using AssignmentPro.DataBase;
-using AssignmentPro.Models;
+﻿using AssignmentPro.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssignmentPro.Repository;
@@ -52,8 +51,6 @@ public class JobRepository : IJobRepository
     }
     public async Task<Job> AddJobAsync(Job job, CancellationToken cancellationToken)
     {
-
-
         try
         {
             job.JobID = "JOB" + Guid.NewGuid().ToString("N").Substring(0, 9).ToUpper();
@@ -97,7 +94,7 @@ public class JobRepository : IJobRepository
     }
     public async Task<Job> GetJobByIdAsync(string id, CancellationToken cancellationToken)
     {
-        var data = await _context.Jobs.FindAsync(id, cancellationToken);
+        var data = await _context.Jobs.FirstOrDefaultAsync(x => x.JobID == id, cancellationToken);
         if(data != null)
         {
             return data;

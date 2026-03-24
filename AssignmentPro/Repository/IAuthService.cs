@@ -1,6 +1,6 @@
 ﻿using AssignmentPro.Models.Auth;
 using Microsoft.AspNetCore.Identity;
-using static AssignmentPro.Auth_IdentityModel.IdentityModel;
+using static AssignmentPro.AuthIdentityModel.IdentityModel;
 
 namespace AssignmentPro.Repository;
 
@@ -31,7 +31,7 @@ public class AuthService : IAuthService
             //UserName = request.Email,
             //FullName = request.FullName,
             Email = request.Email,
-            Phone = request.PhoneNumber,
+            //Phone = request.PhoneNumber,
             EmailConfirmed = true, // Set to true if you want to skip email confirmation for this example
             SecurityStamp = Guid.NewGuid().ToString(),
            
@@ -50,7 +50,7 @@ public class AuthService : IAuthService
         return new RegistrationResponse
         {
             Success = true,
-            UserId = user.Id
+            UserId = user.Id.ToString(),
         };
     }
 }

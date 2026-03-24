@@ -1,37 +1,33 @@
-﻿using AssignmentPro.Models;
+﻿using AssignmentPro.AuthIdentityModel;
+using AssignmentPro.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
-namespace AssignmentPro.DataBase; 
-
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<
+    IdentityModel.User,
+    IdentityModel.Role,
+    long,
+    IdentityModel.UserClaim,
+    IdentityModel.UserRole,
+    IdentityModel.UserLogin,
+    IdentityModel.RoleClaim,
+    IdentityModel.UserToken>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
-
     }
-    public DbSet<User> Users { get; set; }
+
     public DbSet<Job> Jobs { get; set; }
     public DbSet<Application> Applications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<Application>()
-            .HasOne(a => a.User)
-            .WithMany(u => u.Applications)
-            .HasForeignKey(a => a.UserID)
-            .OnDelete(DeleteBehavior.Cascade);
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 
-        modelBuilder.Entity<Application>()
-            .HasOne(a => a.Job)
-            .WithMany(j => j.Applications)
-            .HasForeignKey(a => a.JobID)
-            .OnDelete(DeleteBehavior.Cascade);
 
     }
-
 }
-
-

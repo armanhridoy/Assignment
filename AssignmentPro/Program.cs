@@ -1,28 +1,25 @@
-using AssignmentPro.Auth_IdentityModel;
-using AssignmentPro.DataBase;
 using AssignmentPro.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using static AssignmentPro.Auth_IdentityModel.IdentityModel;
+using static AssignmentPro.AuthIdentityModel.IdentityModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+//builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddIdentity<User, IdentityRole>(options =>
+builder.Services.AddIdentity<User, Role>(options =>
 {
-    options.Password.RequireDigit = true;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
+    options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = false;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
