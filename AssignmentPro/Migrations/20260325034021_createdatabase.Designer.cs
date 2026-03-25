@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssignmentPro.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260324050959_test")]
-    partial class test
+    [Migration("20260325034021_createdatabase")]
+    partial class createdatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -202,6 +202,9 @@ namespace AssignmentPro.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -223,8 +226,8 @@ namespace AssignmentPro.Migrations
                         {
                             Id = 1L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "565caa26-df71-447d-a2a8-24ca3aca17aa",
-                            CreatedAt = new DateTime(2026, 3, 24, 11, 9, 59, 285, DateTimeKind.Local).AddTicks(2759),
+                            ConcurrencyStamp = "f4221585-6651-4c73-9202-94a316239323",
+                            CreatedAt = new DateTime(2026, 3, 25, 9, 40, 21, 70, DateTimeKind.Local).AddTicks(871),
                             Degree = "MSc in CSE",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
@@ -232,10 +235,10 @@ namespace AssignmentPro.Migrations
                             Name = "Admin User",
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBQI3mDcFaXRY5OZUSnbc+i56BLE+jRFp+Axi7AccWyrOpw2dy6LsixT6vHRRRGQjQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL8klkqk4RROCCT/nfPCKxgE7nSXjBo+b3G3CHrSADvHsLaeDUon79MUsyrDVO/yZw==",
                             PhoneNumberConfirmed = false,
                             ResumePath = "default.pdf",
-                            SecurityStamp = "95fe3e79-a816-40e0-8f2b-69f22d46a048",
+                            SecurityStamp = "f569b02e-9883-4c63-964e-42fa9281862b",
                             TwoFactorEnabled = false,
                             University = "Dhaka University",
                             UserName = "admin@localhost.com"

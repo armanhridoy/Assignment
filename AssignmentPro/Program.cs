@@ -1,4 +1,6 @@
+using AssignmentPro.FilesUpload;
 using AssignmentPro.Repository;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static AssignmentPro.AuthIdentityModel.IdentityModel;
@@ -10,9 +12,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
-
-
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<UserIdService>();
 builder.Services.AddIdentity<User, Role>(options =>
 {
     options.Password.RequiredLength = 6;

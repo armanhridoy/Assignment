@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AssignmentPro.Models.Auth;
 
 public class RegisterViewModel
 {
-  
-    public string UserID { get; set; }
-
     [Required]
     [StringLength(100)]
     public string Name { get; set; }
@@ -34,9 +32,7 @@ public class RegisterViewModel
     public decimal? CGPA { get; set; }
 
     public int? CompletionYear { get; set; }
-
-    [StringLength(200)]
-    public string ResumePath { get; set; }
+    public IFormFile ResumePath { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public ICollection<Application> Applications { get; set; } = new HashSet<Application>();

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AssignmentPro.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class createdatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,7 @@ namespace AssignmentPro.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PresentSalary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Degree = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -236,8 +237,8 @@ namespace AssignmentPro.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "CGPA", "CompletionYear", "ConcurrencyStamp", "CreatedAt", "Degree", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PresentSalary", "ResumePath", "SecurityStamp", "TwoFactorEnabled", "University", "UserName" },
-                values: new object[] { 1L, 0, null, null, "565caa26-df71-447d-a2a8-24ca3aca17aa", new DateTime(2026, 3, 24, 11, 9, 59, 285, DateTimeKind.Local).AddTicks(2759), "MSc in CSE", "admin@localhost.com", true, false, null, "Admin User", "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEBQI3mDcFaXRY5OZUSnbc+i56BLE+jRFp+Axi7AccWyrOpw2dy6LsixT6vHRRRGQjQ==", null, false, null, "default.pdf", "95fe3e79-a816-40e0-8f2b-69f22d46a048", false, "Dhaka University", "admin@localhost.com" });
+                columns: new[] { "Id", "AccessFailedCount", "CGPA", "CompletionYear", "ConcurrencyStamp", "CreatedAt", "Degree", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PresentSalary", "ResumePath", "SecurityStamp", "TwoFactorEnabled", "University", "UserId", "UserName" },
+                values: new object[] { 1L, 0, null, null, "f4221585-6651-4c73-9202-94a316239323", new DateTime(2026, 3, 25, 9, 40, 21, 70, DateTimeKind.Local).AddTicks(871), "MSc in CSE", "admin@localhost.com", true, false, null, "Admin User", "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEL8klkqk4RROCCT/nfPCKxgE7nSXjBo+b3G3CHrSADvHsLaeDUon79MUsyrDVO/yZw==", null, false, null, "default.pdf", "f569b02e-9883-4c63-964e-42fa9281862b", false, "Dhaka University", null, "admin@localhost.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

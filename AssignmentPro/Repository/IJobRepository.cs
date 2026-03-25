@@ -1,5 +1,7 @@
 ﻿using AssignmentPro.Models;
+
 using Microsoft.EntityFrameworkCore;
+using static AssignmentPro.AuthIdentityModel.IdentityModel;
 
 namespace AssignmentPro.Repository;
 
@@ -15,9 +17,12 @@ public interface IJobRepository
 public class JobRepository : IJobRepository
 {
     private readonly ApplicationDbContext _context;
-    public  JobRepository(ApplicationDbContext context)
+    private readonly UserIdService _userIdService;
+    public  JobRepository(ApplicationDbContext context, UserIdService userIdService)
     {
         _context = context;
+        _userIdService = userIdService;
+
     }
     public async Task<IEnumerable<Job>> GetAllJobAsync(CancellationToken cancellationToken)
     {
@@ -30,30 +35,38 @@ public class JobRepository : IJobRepository
     }
     public async Task DeleteJob(string id, CancellationToken cancellationToken)
     {
+        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+
         try
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            // Get job with related applications
+            var job = await _context.Jobs
+                .Include(j => j.Applications)
+                .FirstOrDefaultAsync(j => j.JobID == id, cancellationToken);
 
-            await _context.Database.ExecuteSqlRawAsync(
-                "DELETE FROM Application WHERE JobID = {0}", id);
+            if (job == null)
+                return;
 
-            await _context.Database.ExecuteSqlRawAsync(
-                "DELETE FROM Jobs WHERE JobID = {0}", id);
+            // Remove child records first
+            _context.Applications.RemoveRange(job.Applications);
 
-            await transaction.CommitAsync();
+            // Remove parent
+            _context.Jobs.Remove(job);
+
+            await _context.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
         }
-        catch ( Exception ex)
+        catch (Exception)
         {
-
+            await transaction.RollbackAsync(cancellationToken);
             throw;
         }
-       
     }
     public async Task<Job> AddJobAsync(Job job, CancellationToken cancellationToken)
     {
         try
         {
-            job.JobID = "JOB" + Guid.NewGuid().ToString("N").Substring(0, 9).ToUpper();
+            job.JobID = await _userIdService.GetNextUserIdAsync<Job>(x => x.JobID);
             await _context.AddAsync(job, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return job;
@@ -68,7 +81,7 @@ public class JobRepository : IJobRepository
     }
     public async Task<Job> UpdateJobAsync(Job job, CancellationToken cancellationToken)
     {
-        var data = await _context.Jobs.FindAsync(job.JobID, cancellationToken);
+        var data = await _context.Jobs.FirstOrDefaultAsync(x=>x.JobID==job.JobID, cancellationToken);
         if(data != null)
         {
             data.JobTitle = job.JobTitle;
@@ -83,7 +96,7 @@ public class JobRepository : IJobRepository
     }
     public async Task<Job> DeleteJobAsync(string id, CancellationToken cancellationToken)
     {
-        var data = await _context.Jobs.FindAsync(id, cancellationToken);
+        var data = await _context.Jobs.FirstOrDefaultAsync(x=>x.JobID==id, cancellationToken);
         if(data != null)
         {
             _context.Remove(data);

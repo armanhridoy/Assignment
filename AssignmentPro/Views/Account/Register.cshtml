@@ -86,7 +86,7 @@
             <!-- Password -->
             <div class="col-md-6">
                 <label>Password</label>
-                <input type="password" name="Password" class="form-control" placeholder="Enter password" />
+                <input asp-for="PasswordHash" type="password"  class="form-control" placeholder="Enter password" />
             </div>
 
             <!-- Phone -->
@@ -128,13 +128,13 @@
             <!-- Resume Upload -->
             <div class="col-md-6">
                 <label>Upload Resume (PDF)</label>
-                <input type="file" name="ResumeFile" class="form-control" accept="application/pdf" />
+                <input asp-for="ResumePath" type="file"  class="form-control" accept="application/pdf" />
             </div>
 
         </div>
 
-        <button type="submit" class="btn-submit">Create Account</button>
 
+        <button type="submit" class="btn-submit">Create Account</button>
     </form>
 
 </div>

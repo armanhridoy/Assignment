@@ -11,6 +11,7 @@ public class IdentityModel
     [Table("Users")]
     public class User : IdentityUser<long>
     {
+        public string? UserId { get; set; }
         [Required]
         [StringLength(100)]
         public string Name { get; set; }

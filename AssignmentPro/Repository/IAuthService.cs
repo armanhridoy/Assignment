@@ -1,5 +1,7 @@
-﻿using AssignmentPro.Models.Auth;
+﻿using AssignmentPro.FilesUpload;
+using AssignmentPro.Models.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using static AssignmentPro.AuthIdentityModel.IdentityModel;
 
 namespace AssignmentPro.Repository;
@@ -11,9 +13,13 @@ public interface IAuthService
 public class AuthService : IAuthService
 {
     private readonly UserManager<User> _userManager;
-    public AuthService(UserManager<User> userManager)
+    private readonly IFileService _fileService;
+    private readonly UserIdService _userIdService;
+    public AuthService(UserManager<User> userManager,IFileService fileService, UserIdService userIdService)
     {
         _userManager = userManager;
+        _fileService = fileService;
+        _userIdService = userIdService;
     }
     public async Task<RegistrationResponse> Register(RegisterViewModel request)
     {
@@ -23,29 +29,50 @@ public class AuthService : IAuthService
             return new RegistrationResponse
             {
                 Success = false,
-                Errors = new List<string> { "Email is already registered." }
+                Errors = new List<string> {"Email is already registered." }
             };
         }
-        var user = new User
-        {
-            //UserName = request.Email,
-            //FullName = request.FullName,
-            Email = request.Email,
-            //Phone = request.PhoneNumber,
-            EmailConfirmed = true, // Set to true if you want to skip email confirmation for this example
-            SecurityStamp = Guid.NewGuid().ToString(),
-           
-        };
-        //var result = await _userManager.CreateAsync(user, request.Password);
-        //if (!result.Succeeded)
+        //Check if phone number already exists
+
+        //var existingPhoneUser = await _userManager.Users
+        //    .FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+        //if(existingPhoneUser != null)
         //{
         //    return new RegistrationResponse
         //    {
         //        Success = false,
-        //        Errors = result.Errors.Select(e => e.Description).ToList()
+        //        Errors = new List<string> { "Phone Number is Already registered." }
         //    };
         //}
-        await _userManager.AddToRoleAsync(user, "User"); // Assign default role if needed
+
+        var user = new User
+        {
+            UserName = request.Email,
+            Name = request.Name,
+            Email = request.Email,
+            PresentSalary=request.PresentSalary,
+            Degree=request.Degree,
+            University=request.University,
+            CGPA=request.CGPA,
+            CompletionYear=request.CompletionYear,
+            ResumePath= await _fileService.Upload(request.ResumePath, "Cv"),
+            PhoneNumber = request.PhoneNumber,
+            CreatedAt=DateTime.Now,
+            EmailConfirmed = true,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            UserId= await _userIdService.GetNextUserIdAsync<User>(x => x.UserId)
+
+        };
+        var result = await _userManager.CreateAsync(user, request.PasswordHash);
+        if (!result.Succeeded)
+        {
+            return new RegistrationResponse
+            {
+                Success = false,
+                Errors = result.Errors.Select(e => e.Description).ToList()
+            };
+        }
+        await _userManager.AddToRoleAsync(user, "User"); //Assign default role if needed
 
         return new RegistrationResponse
         {
