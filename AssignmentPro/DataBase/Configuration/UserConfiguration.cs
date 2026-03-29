@@ -13,7 +13,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasData(new User
         {
             Id = 1,
-            Name = "Admin User", // ✅ required
+            //Name = "Admin User", // ✅ required
             Email = "admin@localhost.com",
             NormalizedEmail = "ADMIN@LOCALHOST.COM",
             UserName = "admin@localhost.com",
@@ -21,9 +21,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             PasswordHash = hasher.HashPassword(null, "P@ssword1"),
             EmailConfirmed = true,
             SecurityStamp = Guid.NewGuid().ToString(),
-            Degree = "MSc in CSE", // optional, but good to provide
-            ResumePath = "default.pdf",    // MUST provide non-null value
-            University = "Dhaka University",
+           // Degree = "MSc in CSE", // optional, but good to provide
+            //ResumePath = "default.pdf",    // MUST provide non-null value
+            //University = "Dhaka University",
             CreatedAt = DateTime.Now
         });
 

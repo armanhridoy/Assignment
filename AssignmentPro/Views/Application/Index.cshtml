@@ -1,0 +1,191 @@
+﻿@model IEnumerable<AssignmentPro.Models.Application>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color: #fff;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #00f2fe;
+    text-align: center;
+}
+
+/* Table for Desktop */
+.table-wrapper {
+    display: block;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    font-size: 14px;
+    text-align: left;
+}
+
+th {
+    background: rgba(255,255,255,0.1);
+    color: #00f2fe;
+}
+
+tr:nth-child(even) {
+    background: rgba(255,255,255,0.03);
+}
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    color: #000;
+    background: linear-gradient(45deg,#00f2fe,#4facfe);
+    transition: 0.3s;
+    margin-right: 5px;
+}
+
+.btn:hover {
+    background: linear-gradient(45deg,#7367f0,#00f2fe);
+    color: #fff;
+}
+
+.btn-edit {
+    background: linear-gradient(45deg,#f9a825,#ffeb3b);
+}
+
+.btn-edit:hover {
+    background: linear-gradient(45deg,#ffeb3b,#f9a825);
+    color: #000;
+}
+
+/* Cards for Mobile */
+.card {
+    display: none;
+    background: rgba(255,255,255,0.06);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.card div {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.card .card-buttons {
+    margin-top: 10px;
+}
+
+/* Responsive for Mobile */
+@@media (max-width: 768px) {
+    .table-wrapper {
+        display: none;
+    }
+
+    .card {
+        display: block;
+    }
+}
+</style>
+
+<div class="container">
+    <div class="title">📄 Applications List</div>
+
+    @if(Model.Any())
+    {
+        <!-- Desktop Table -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>App ID</th>
+                        <th>Name</th>
+                        <th>Job</th>
+                        <th>Expected Salary</th>
+                        <th>CGPA</th>
+                        <th>Resume</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var app in Model)
+                    {
+                        <tr>
+                            <td>@app.ApplicationId</td>
+                            <td>@app.Name</td>
+                            <td>@(app.Job?.JobTitle ?? "N/A")</td>
+                            <td>@(app.ExpectionSalary ?? 0)</td>
+                            <td>@(app.CGPA ?? 0)</td>
+                            <td>
+                                @if(!string.IsNullOrEmpty(app.ResumePath))
+                                {
+                                    <a href="@app.ResumePath" target="_blank" class="btn">View</a>
+                                }
+                                else
+                                {
+                                    <span>N/A</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="/Application/Details/@app.ApplicationId" class="btn">Details</a>
+                              
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        @foreach(var app in Model)
+        {
+            <div class="card">
+                <div><b>App ID:</b> @app.ApplicationId</div>
+                <div><b>Name:</b> @app.Name</div>
+                <div><b>Job:</b> @(app.Job?.JobTitle ?? "N/A")</div>
+                <div><b>Expected Salary:</b> @(app.ExpectionSalary ?? 0)</div>
+
+                <div><b>CGPA:</b> @(app.CGPA?.ToString("0.##") ?? "N/A")</div>
+                <div>
+                    <b>Resume:</b>
+                    @if(!string.IsNullOrEmpty(app.ResumePath))
+                    {
+                        <a href="@app.ResumePath" target="_blank" class="btn">View Resume</a>
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </div>
+                <div class="card-buttons">
+                    <a href="/Application/Details/@app.ApplicationId" class="btn">Details</a>
+                    
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p style="text-align:center;color:#ccc;">No applications found.</p>
+    }
+</div> 

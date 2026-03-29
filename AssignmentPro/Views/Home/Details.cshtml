@@ -52,11 +52,13 @@
         </div>
 
         <p>@Model.Description</p>
+        @if (!User.IsInRole("Administrator"))
+        {
 
-        <form asp-controller="Application" asp-action="Apply" method="post">
-            <input type="hidden" name="jobId" value="@Model.JobID" />
-            <button type="submit" class="btn">Apply Now</button>
-        </form>
+            <a asp-controller="Home" asp-action="Apply" asp-route-jobId="@Model.Id" class="btn">
+                Apply Now
+        </a>
+        }
 
     </div>
 </div>

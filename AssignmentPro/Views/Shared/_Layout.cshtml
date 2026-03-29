@@ -11,40 +11,48 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <style>
-        body {
-            background: #0f172a;
-            color: #fff;
-        }
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
 
-        /* Navbar */
-        .navbar {
-            background: rgba(255,255,255,0.05) !important;
-            backdrop-filter: blur(10px);
-        }
+    body {
+        display: flex;
+        flex-direction: column;
+        background: #0f172a;
+        color: #fff;
+    }
+    .container {
+        flex: 1;
+    }
 
-        .navbar-brand {
-            font-weight: bold;
-            color: #00f2fe !important;
-        }
+    .navbar {
+        background: rgba(255,255,255,0.05) !important;
+        backdrop-filter: blur(10px);
+    }
 
-        /* Footer */
-        footer {
-            background: #020617;
-            color: #aaa;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 50px;
-        }
+    .navbar-brand {
+        font-weight: bold;
+        color: #00f2fe !important;
+    }
 
-        footer a {
-            color: #00f2fe;
-            text-decoration: none;
-        }
+    footer {
+        background: #020617;
+        color: #aaa;
+        text-align: center;
+        padding: 20px 0;
+        margin-top: auto; 
+    }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    footer a {
+        color: #00f2fe;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+</style>
 </head>
 
 <body>

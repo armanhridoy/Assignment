@@ -1,0 +1,161 @@
+﻿@model AssignmentPro.Models.Application
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+        color: #fff;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.07);
+        border-radius: 20px;
+        padding: 30px;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        color: #00f2fe;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .item {
+        background: rgba(255,255,255,0.05);
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .label {
+        font-size: 12px;
+        color: #aaa;
+        margin-bottom: 5px;
+    }
+
+    .value {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .full {
+        grid-column: span 2;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 18px;
+        border-radius: 12px;
+        background: linear-gradient(45deg,#00f2fe,#4facfe);
+        color: #000;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn:hover {
+            background: linear-gradient(45deg,#7367f0,#00f2fe);
+            color: #fff;
+        }
+
+    .actions {
+        text-align: center;
+    }
+
+    @@media (max-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        .full {
+            grid-column: span 1;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="title">📄 Application Details</div>
+
+        <div class="grid">
+            <div class="item">
+                <div class="label">Application ID</div>
+                <div class="value">@Model.ApplicationId</div>
+            </div>
+
+            <div class="item">
+                <div class="label">Full Name</div>
+                <div class="value">@Model.Name</div>
+            </div>
+
+            <div class="item">
+                <div class="label">Present Salary</div>
+                <div class="value">@Model.PresentSalary</div>
+            </div>
+
+            <div class="item">
+                <div class="label">Expected Salary</div>
+                <div class="value">@Model.ExpectionSalary</div>
+            </div>
+
+            <div class="item">
+                <div class="label">Degree</div>
+                <div class="value">@Model.Degree</div>
+            </div>
+
+            <div class="item">
+                <div class="label">University</div>
+                <div class="value">@Model.University</div>
+            </div>
+
+            <div class="item">
+                <div class="label">CGPA</div>
+                <div class="value">@Model.CGPA</div>
+            </div>
+
+            <div class="item">
+                <div class="label">Completion Year</div>
+                <div class="value">@Model.CompletionYear</div>
+            </div>
+
+            <div class="item full">
+                <div class="label">Applied Job</div>
+                <div class="value">@Model.Job?.JobTitle</div>
+            </div>
+
+            <div class="item full">
+                <div class="label">Resume</div>
+                <div class="value">
+                    @if (!string.IsNullOrEmpty(Model.ResumePath))
+                    {
+                        <a href="@Model.ResumePath" target="_blank" class="btn">📄 View Resume</a>
+                    }
+                    else
+                    {
+                        <span>No Resume Uploaded</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="/Application/Index" class="btn">⬅ Back</a>
+        </div>
+    </div>
+</div>

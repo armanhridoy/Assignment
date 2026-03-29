@@ -1,55 +1,80 @@
 ﻿@using AssignmentPro.Models.Auth
 @model RegisterViewModel
+
 <style>
     body {
         background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-        font-family: 'Segoe UI';
+        font-family: 'Segoe UI', sans-serif;
         color: #fff;
+        margin: 0;
+        padding: 0;
     }
 
     .form-container {
         max-width: 900px;
         margin: 40px auto;
-        background: rgba(255,255,255,0.05);
-        padding: 30px;
-        border-radius: 20px;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        background: rgba(255,255,255,0.06);
+        padding: 40px;
+        border-radius: 25px;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        transition: 0.4s;
     }
 
     .title {
         text-align: center;
-        font-size: 28px;
-        margin-bottom: 25px;
+        font-size: 32px;
+        margin-bottom: 30px;
         font-weight: bold;
-        color: #00f2fe;
+        background: linear-gradient(45deg,#00f2fe,#4facfe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 20px;
     }
 
     .form-control {
-        background: rgba(255,255,255,0.08);
+        width: 100%;
+        background: rgba(255,255,255,0.1);
         border: none;
         color: #fff;
+        padding: 12px 15px 12px 40px;
+        border-radius: 12px;
+        transition: 0.3s;
     }
 
         .form-control::placeholder {
-            color: #ccc;
+            color: #bbb;
         }
 
         .form-control:focus {
-            box-shadow: none;
             border: 1px solid #00f2fe;
+            box-shadow: 0 0 10px #00f2fe50;
+            background: rgba(255,255,255,0.15);
         }
 
-    label {
-        margin-top: 10px;
+    .form-icon {
+        position: absolute;
+        top: 38px;
+        left: 12px;
+        color: #00f2fe;
         font-size: 14px;
     }
 
+    label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+    }
+
     .btn-submit {
-        margin-top: 20px;
+        margin-top: 25px;
         width: 100%;
-        padding: 12px;
-        border-radius: 12px;
+        padding: 14px;
+        border-radius: 15px;
         background: linear-gradient(45deg,#00f2fe,#4facfe);
         border: none;
         font-weight: bold;
@@ -61,81 +86,119 @@
             background: linear-gradient(45deg,#7367f0,#00f2fe);
             color: #fff;
         }
+
+    .footer-text {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #ccc;
+    }
+
+        .footer-text a {
+            color: #00f2fe;
+            text-decoration: none;
+        }
+
+    /* 🔥 RESPONSIVE PART */
+
+    /* Tablet */
+    @@media (max-width: 992px) {
+        .form-container
+
+    {
+        margin: 20px;
+        padding: 30px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    }
+
+    /* Mobile */
+    @@media (max-width: 768px) {
+        .form-container
+
+    {
+        padding: 25px;
+        border-radius: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .row > div {
+        width: 100%;
+    }
+
+    .form-icon {
+        top: 36px;
+    }
+
+    }
+
+    /* Small Mobile */
+    @@media (max-width: 480px) {
+        .form-container
+
+    {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .btn-submit {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    }
 </style>
 
 <div class="form-container">
 
     <div class="title">🚀 Create Your Account</div>
 
-    <form asp-action="Register" method="post" enctype="multipart/form-data">
+    <form asp-action="Register" method="post">
 
         <div class="row">
 
-            <!-- Name -->
-            <div class="col-md-6">
+            <div class="col-md-6 form-group">
                 <label>Full Name</label>
+                <i class="form-icon">👤</i>
                 <input asp-for="Name" class="form-control" placeholder="Enter your name" />
             </div>
 
-            <!-- Email -->
-            <div class="col-md-6">
+            <div class="col-md-6 form-group">
                 <label>Email</label>
+                <i class="form-icon">📧</i>
                 <input asp-for="Email" class="form-control" placeholder="Enter your email" />
             </div>
 
-            <!-- Password -->
-            <div class="col-md-6">
+            <div class="col-md-6 form-group">
                 <label>Password</label>
-                <input asp-for="PasswordHash" type="password"  class="form-control" placeholder="Enter password" />
+                <i class="form-icon">🔒</i>
+                <input asp-for="PasswordHash" type="password" class="form-control" placeholder="Enter password" />
             </div>
 
-            <!-- Phone -->
-            <div class="col-md-6">
+            <div class="col-md-6 form-group">
                 <label>Phone</label>
+                <i class="form-icon">📱</i>
                 <input asp-for="PhoneNumber" class="form-control" placeholder="Phone number" />
-            </div>
-
-            <!-- Salary -->
-            <div class="col-md-6">
-                <label>Present Salary</label>
-                <input asp-for="PresentSalary" class="form-control" placeholder="e.g. 30000" />
-            </div>
-
-            <!-- Degree -->
-            <div class="col-md-6">
-                <label>Degree</label>
-                <input asp-for="Degree" class="form-control" placeholder="BSc / MSc" />
-            </div>
-
-            <!-- University -->
-            <div class="col-md-6">
-                <label>University</label>
-                <input asp-for="University" class="form-control" placeholder="Your university" />
-            </div>
-
-            <!-- CGPA -->
-            <div class="col-md-6">
-                <label>CGPA</label>
-                <input asp-for="CGPA" class="form-control" placeholder="e.g. 3.50" />
-            </div>
-
-            <!-- Completion Year -->
-            <div class="col-md-6">
-                <label>Completion Year</label>
-                <input asp-for="CompletionYear" class="form-control" placeholder="2024" />
-            </div>
-
-            <!-- Resume Upload -->
-            <div class="col-md-6">
-                <label>Upload Resume (PDF)</label>
-                <input asp-for="ResumePath" type="file"  class="form-control" accept="application/pdf" />
             </div>
 
         </div>
 
-
         <button type="submit" class="btn-submit">Create Account</button>
+
+        <div class="footer-text">
+            Already have an account? <a href="/Account/Login">Login</a>
+        </div>
+
     </form>
 
 </div>
-

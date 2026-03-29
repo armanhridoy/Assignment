@@ -1,0 +1,146 @@
+﻿@model AssignmentPro.Models.Application
+
+<style>
+    body {
+        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+        font-family: 'Segoe UI', sans-serif;
+        color: #fff;
+    }
+
+    .apply-container {
+        max-width: 850px;
+        margin: 40px auto;
+        padding: 35px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.06);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        background: linear-gradient(45deg,#00f2fe,#4facfe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+    }
+
+        .form-control:focus {
+            border: 1px solid #00f2fe;
+            box-shadow: 0 0 8px #00f2fe70;
+        }
+
+    .btn-submit {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        background: linear-gradient(45deg,#00f2fe,#4facfe);
+        color: #000;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .btn-submit:hover {
+            background: linear-gradient(45deg,#7367f0,#00f2fe);
+            color: #fff;
+        }
+
+    /* Responsive */
+    @@media(max - width:768px) {
+        .apply-container
+
+    {
+        margin: 20px;
+        padding: 25px;
+    }
+
+    }
+</style>
+
+<div class="apply-container">
+
+    <div class="title">📄 Apply for Job</div>
+
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-warning">@ViewBag.Message</div>
+    }
+
+    <form asp-action="ApplyJob" method="post" enctype="multipart/form-data">
+
+        <!-- 🔥 Hidden Fields -->
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="JobId" />
+
+        <div class="row">
+
+            <div class="col-md-6 form-group">
+                <label>Full Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Your name" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Present Salary</label>
+                <input asp-for="PresentSalary" class="form-control" placeholder="Current salary" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Expected Salary</label>
+                <input asp-for="ExpectionSalary" class="form-control" placeholder="Expected salary" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Degree</label>
+                <input asp-for="Degree" class="form-control" placeholder="Your degree" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>University</label>
+                <input asp-for="University" class="form-control" placeholder="University name" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>CGPA</label>
+                <input asp-for="CGPA" class="form-control" placeholder="CGPA" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Completion Year</label>
+                <input asp-for="CompletionYear" class="form-control" placeholder="Year" />
+            </div>
+
+            <div class="col-md-12 form-group">
+                <label>Upload Resume</label>
+                <input type="file" name="ResumeFile" class="form-control" />
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn-submit">🚀 Submit Application</button>
+
+    </form>
+
+</div>

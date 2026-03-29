@@ -21,19 +21,6 @@ public class RegisterViewModel
     [StringLength(20)]
     public string PhoneNumber { get; set; }
 
-    public decimal? PresentSalary { get; set; }
-
-    [StringLength(100)]
-    public string Degree { get; set; }
-
-    [StringLength(200)]
-    public string University { get; set; }
-
-    public decimal? CGPA { get; set; }
-
-    public int? CompletionYear { get; set; }
-    public IFormFile ResumePath { get; set; }
-
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public ICollection<Application> Applications { get; set; } = new HashSet<Application>();
+   
+    
 }

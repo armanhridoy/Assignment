@@ -150,6 +150,11 @@
                         }
                     </td>
 
+                    <form asp-controller="Home" asp-action="Apply" method="get">
+                        <input type="hidden" name="jobId" value="@item.Id" />
+                        <button type="submit" class="btn btn-primary">Apply Now</button>
+                    </form>
+
                     <td class="d-flex gap-1">
 
                         <a asp-action="Details"

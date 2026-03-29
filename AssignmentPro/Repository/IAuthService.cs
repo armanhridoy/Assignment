@@ -48,14 +48,7 @@ public class AuthService : IAuthService
         var user = new User
         {
             UserName = request.Email,
-            Name = request.Name,
             Email = request.Email,
-            PresentSalary=request.PresentSalary,
-            Degree=request.Degree,
-            University=request.University,
-            CGPA=request.CGPA,
-            CompletionYear=request.CompletionYear,
-            ResumePath= await _fileService.Upload(request.ResumePath, "Cv"),
             PhoneNumber = request.PhoneNumber,
             CreatedAt=DateTime.Now,
             EmailConfirmed = true,

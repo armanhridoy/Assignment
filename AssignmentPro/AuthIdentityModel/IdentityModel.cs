@@ -12,23 +12,6 @@ public class IdentityModel
     public class User : IdentityUser<long>
     {
         public string? UserId { get; set; }
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
-        public decimal? PresentSalary { get; set; }
-        [StringLength(100)]
-        public string Degree { get; set; }
-
-        [StringLength(200)]
-        public string University { get; set; }
-
-        public decimal? CGPA { get; set; }
-
-        public int? CompletionYear { get; set; }
-
-        [StringLength(200)]
-        public string ResumePath { get; set; }
-
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public ICollection<Application> Applications { get; set; } = new HashSet<Application>();
