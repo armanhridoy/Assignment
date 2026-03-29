@@ -125,6 +125,8 @@ tr:nth-child(even) {
                         <th>CGPA</th>
                         <th>Resume</th>
                         <th>Action</th>
+                        
+
                     </tr>
                 </thead>
                 <tbody>
@@ -139,7 +141,7 @@ tr:nth-child(even) {
                             <td>
                                 @if(!string.IsNullOrEmpty(app.ResumePath))
                                 {
-                                    <a href="@app.ResumePath" target="_blank" class="btn">View</a>
+                                    <a href="~/Cv/@app.ResumePath" target="_blank" class="btn">View</a>
                                 }
                                 else
                                 {
@@ -148,44 +150,18 @@ tr:nth-child(even) {
                             </td>
                             <td>
                                 <a href="/Application/Details/@app.ApplicationId" class="btn">Details</a>
-                              
+
+                                @if (app.Job != null && app.Job.Deadline > DateTime.Now)
+                                {
+                                    <a asp-action="CreateOrEdit" asp-route-id="@app.Id" class="btn btn-edit">
+                                        ✏ Edit
+                                    </a>
+                                }
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-
-        <!-- Mobile Cards -->
-        @foreach(var app in Model)
-        {
-            <div class="card">
-                <div><b>App ID:</b> @app.ApplicationId</div>
-                <div><b>Name:</b> @app.Name</div>
-                <div><b>Job:</b> @(app.Job?.JobTitle ?? "N/A")</div>
-                <div><b>Expected Salary:</b> @(app.ExpectionSalary ?? 0)</div>
-
-                <div><b>CGPA:</b> @(app.CGPA?.ToString("0.##") ?? "N/A")</div>
-                <div>
-                    <b>Resume:</b>
-                    @if(!string.IsNullOrEmpty(app.ResumePath))
-                    {
-                        <a href="@app.ResumePath" target="_blank" class="btn">View Resume</a>
-                    }
-                    else
-                    {
-                        <span>N/A</span>
-                    }
-                </div>
-                <div class="card-buttons">
-                    <a href="/Application/Details/@app.ApplicationId" class="btn">Details</a>
-                    
-                </div>
-            </div>
         }
-    }
-    else
-    {
-        <p style="text-align:center;color:#ccc;">No applications found.</p>
-    }
-</div> 
+

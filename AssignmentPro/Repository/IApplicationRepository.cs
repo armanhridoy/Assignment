@@ -1,4 +1,5 @@
-﻿using AssignmentPro.Models;
+﻿using AssignmentPro.FilesUpload;
+using AssignmentPro.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssignmentPro.Repository;
@@ -7,10 +8,10 @@ public interface IApplicationRepository
 {
     Task<IEnumerable<Application>> GetAllApplicationsAsync(CancellationToken cancellationToken);
     Task<Application> AddApplicationAsync(Application application, CancellationToken cancellationToken);
-    Task<Application> UpdateApplicationAsync(Application application, CancellationToken cancellationToken);
+    Task<Application> UpdateApplicationAsync(Application application, IFormFile ResumeFile, CancellationToken cancellationToken);
     Task<Application> GetApplicationByIdAsync(string id, CancellationToken cancellationToken);
     Task DeleteApplicationAsync(string id, CancellationToken cancellationToken);
-
+    Task<IEnumerable<Application>> GetApplicationsByUserIdAsync(long userId, CancellationToken cancellationToken);
     Task<Application> GetApplicationByUserAndJobAsync(long userId, long jobId, CancellationToken cancellationToken);
 }
 
@@ -18,14 +19,16 @@ public class ApplicationRepository : IApplicationRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly UserIdService _userIdService;
-    public ApplicationRepository(ApplicationDbContext context,UserIdService userIdService)
+    private readonly IFileService _fileService;
+    public ApplicationRepository(ApplicationDbContext context,UserIdService userIdService,IFileService fileService)
     {
         _context = context;
         _userIdService = userIdService;
+        _fileService = fileService;
     }
     public async Task<IEnumerable<Application>> GetAllApplicationsAsync(CancellationToken cancellationToken)
     {
-        return await _context.Applications.ToListAsync(cancellationToken);
+        return await _context.Applications.Include (x=>x.Job).ToListAsync(cancellationToken);
     }
     public async Task<Application> AddApplicationAsync(Application application, CancellationToken cancellationToken)
     {
@@ -34,11 +37,36 @@ public class ApplicationRepository : IApplicationRepository
         await _context.SaveChangesAsync(cancellationToken);
         return application;
     }
-    public async Task<Application> UpdateApplicationAsync(Application application, CancellationToken cancellationToken)
+    public async Task<Application> UpdateApplicationAsync(Application application, IFormFile ResumeFile, CancellationToken cancellationToken)
     {
-        _context.Applications.Update(application);
-        await _context.SaveChangesAsync(cancellationToken);
-        return application;
+        try
+        {
+            var data = await _context.Applications.FirstOrDefaultAsync(x => x.ApplicationId == application.ApplicationId, cancellationToken);
+          
+            data.Name = application.Name;
+            data.PresentSalary = application.PresentSalary;
+            data.ExpectionSalary = application.ExpectionSalary;
+            data.Degree = application.Degree;
+            data.University = application.University;
+            data.CGPA = application.CGPA;
+            data.CompletionYear = application.CompletionYear;
+            if(ResumeFile !=null)
+            {
+                data.ResumePath = await _fileService.Upload(ResumeFile, "Cv");
+            }
+           
+
+
+            _context.Applications.Update(data);
+            await _context.SaveChangesAsync(cancellationToken);
+            return application;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
     }
     public async Task<Application> GetApplicationByIdAsync(string Id, CancellationToken cancellationToken)
     {
@@ -65,4 +93,13 @@ public class ApplicationRepository : IApplicationRepository
         return await _context.Applications
                     .FirstOrDefaultAsync(a => a.UserId == userId && a.JobId == jobId, cancellationToken);
     }
+
+    public async Task<IEnumerable<Application>> GetApplicationsByUserIdAsync(long userId, CancellationToken cancellationToken)
+    {
+
+        return await _context.Applications
+                             .Where(a => a.UserId == userId)
+                             .ToListAsync(cancellationToken);
+    }
 }
+
