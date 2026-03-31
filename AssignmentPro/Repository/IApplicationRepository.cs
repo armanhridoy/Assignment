@@ -87,19 +87,19 @@ public class ApplicationRepository : IApplicationRepository
         }
     }
 
-
         public async Task<Application> GetApplicationByUserAndJobAsync(long userId, long jobId, CancellationToken cancellationToken)
     {
-        return await _context.Applications
-                    .FirstOrDefaultAsync(a => a.UserId == userId && a.JobId == jobId, cancellationToken);
+         return await _context.Applications
+        .FirstOrDefaultAsync(a => a.UserId == userId && a.JobId == jobId, cancellationToken);
     }
 
     public async Task<IEnumerable<Application>> GetApplicationsByUserIdAsync(long userId, CancellationToken cancellationToken)
     {
 
         return await _context.Applications
-                             .Where(a => a.UserId == userId)
-                             .ToListAsync(cancellationToken);
+                .Where(a => a.UserId == userId)
+                .Include(x => x.Job)
+                .ToListAsync(cancellationToken);
     }
 }
 

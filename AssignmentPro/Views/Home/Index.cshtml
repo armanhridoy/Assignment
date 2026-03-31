@@ -109,8 +109,6 @@
 
  *@
 
-
-
 @model IEnumerable<AssignmentPro.Models.Job>
 
 <style>
@@ -236,12 +234,20 @@
                     🕒 Posted: @job.CreatedAt.ToString("dd MMM yyyy")
                 </div>
 
-        @if (job.Status == "Active")
+                @if (job.Status == "Active" && job.Deadline >= DateTime.Now)
+                    {
+                        <a href="/home/Details/@job.JobID" class="btn">View Details</a>
+                    }
+                else if (job.Deadline < DateTime.Now)
+                    {
+                        <span class="btn" style="background: gray; cursor: not-allowed;">Expired</span>
+                    }
+                @*  @if (job.Status == "Active")
                 {
                     <a href="/home/Details/@job.JobID" class="btn">View Details</a>
-                }
+                }*@
 
-            </div>
+            </div> 
         }
     }
 

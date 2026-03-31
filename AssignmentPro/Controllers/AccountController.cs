@@ -82,15 +82,15 @@ namespace AssignmentPro.Controllers
 
             }
 
-            [HttpGet]
-            [AllowAnonymous]
-            public IActionResult Login()
-            {
-                return View(new LoginViewModel());
-            }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View(new LoginViewModel());
+        }
 
 
-            [HttpGet]
+        [HttpGet]
             [AllowAnonymous]
             public IActionResult AccessDenied(string returnUrl = null)
             {

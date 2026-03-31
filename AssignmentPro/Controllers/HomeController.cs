@@ -33,6 +33,7 @@ namespace AssignmentPro.Controllers
         [Authorize]
         public async Task<IActionResult> Apply(long jobId, CancellationToken cancellationToken)
           {
+
             var userId = long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var existingApp = await applicationRepository

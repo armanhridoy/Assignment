@@ -52,6 +52,7 @@
     footer a:hover {
         text-decoration: underline;
     }
+
 </style>
 </head>
 
@@ -69,11 +70,55 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
 
-                <ul class="navbar-nav align-items-center gap-2">
-
+                   <div class="navbar-collapse collapse d-sm-inline-flex">
+                <ul class="navbar-nav me-auto align-items-center gap-2">
+                    <!-- ✅ NEW NAV BUTTONS -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-controller="Home" asp-action="Index">
+                            🏠 Home
+                        </a>
+                    </li>
+                    <!--Application Button Added NavBar-->
                     @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Application" asp-action="Index">
+                                📄 Applications
+                            </a>
+                        </li>
+                    }
+                    <!--Nav Show Joblist-->
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Job" asp-action="Index">
+                                📋 Job
+                            </a>
+                        </li>
+                    }
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto align-items-center gap-2">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item d-flex align-items-center text-white me-2">
+                        <!-- Default colorful man image -->
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+                             alt="User" class="rounded-circle me-2" style="width:40px; height:40px;" />
+
+                        <strong>@User.Identity.Name</strong>
+                    </li>
+
+                    <li class="nav-item">
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-danger px-3">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                }  
+                  @* @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item text-white me-2">
                             👋 Hello, <strong>@User.Identity.Name</strong>
@@ -86,7 +131,7 @@
                                 </button>
                             </form>
                         </li>
-                    }
+                    }  *@
                     else
                     {
                         <li class="nav-item">
@@ -103,7 +148,6 @@
                             </a>
                         </li>
                     }
-
                 </ul>
 
             </div>

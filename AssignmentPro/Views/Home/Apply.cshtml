@@ -1,5 +1,7 @@
 ﻿@model AssignmentPro.Models.Application
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+
 <style>
     body {
         background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
@@ -25,15 +27,6 @@
         background: linear-gradient(45deg,#00f2fe,#4facfe);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-    }
-
-    .form-group {
-        margin-bottom: 18px;
-    }
-
-    label {
-        font-size: 14px;
-        margin-bottom: 5px;
     }
 
     .form-control {
@@ -67,15 +60,13 @@
             color: #fff;
         }
 
-    /* Responsive */
-    @@media(max - width:768px) {
-        .apply-container
-
-    {
-        margin: 20px;
-        padding: 25px;
+    .text-danger {
+        color: #ff6b6b;
+        font-size: 13px;
     }
 
+    .tab-content {
+        margin-top: 20px;
     }
 </style>
 
@@ -83,13 +74,104 @@
 
     <div class="title">📄 Apply for Job</div>
 
-
     @if (ViewBag.Message != null)
     {
         <div class="alert alert-warning">@ViewBag.Message</div>
     }
 
     <form asp-action="ApplyJob" method="post" enctype="multipart/form-data">
+        <!-- Hidden Fields -->
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="JobId" />
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="applyTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info" role="tab">Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="resume-tab" data-bs-toggle="tab" href="#resume" role="tab">Resume</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- Info Tab -->
+            <div class="tab-pane fade show active" id="info" role="tabpanel">
+                <div class="row mt-3">
+                    <div class="col-md-6 mb-3">
+                        <label>Full Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="Your name" required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Present Salary</label>
+                        <input asp-for="PresentSalary" class="form-control" placeholder="Current salary" />
+                        <span asp-validation-for="PresentSalary" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Expected Salary</label>
+                        <input asp-for="ExpectionSalary" class="form-control" placeholder="Expected salary" required />
+                        <span asp-validation-for="ExpectionSalary" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Degree</label>
+                        <input asp-for="Degree" class="form-control" placeholder="Your degree" required />
+                        <span asp-validation-for="Degree" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>University</label>
+                        <input asp-for="University" class="form-control" placeholder="University name" />
+                        <span asp-validation-for="University" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>CGPA</label>
+                        <input asp-for="CGPA" class="form-control" placeholder="CGPA" />
+                        <span asp-validation-for="CGPA" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Completion Year</label>
+                        <input asp-for="CompletionYear" class="form-control" placeholder="Year" />
+                        <span asp-validation-for="CompletionYear" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Tab -->
+            <div class="tab-pane fade" id="resume" role="tabpanel">
+                <div class="mb-3 mt-3">
+                    <label>Upload Resume</label>
+                    <input type="file" name="ResumeFile" class="form-control" />
+                    @if (!string.IsNullOrEmpty(Model.ResumePath))
+                    {
+                        <div class="mt-2">
+                            📎 Current File:
+                            <a href="~/Cv/@Model.ResumePath" target="_blank" style="color:#38bdf8; font-weight:500;">
+                                View Resume
+                            </a>
+                        </div>
+                    }
+                </div>
+                <button type="submit" class="btn-submit">🚀 Submit Application</button>
+            </div>
+        </div>
+
+        
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+
+
+
+
+   @*  <form asp-action="ApplyJob" method="post" enctype="multipart/form-data">
 
         <!-- 🔥 Hidden Fields -->
         <input type="hidden" asp-for="UserId" />
@@ -141,6 +223,6 @@
 
         <button type="submit" class="btn-submit">🚀 Submit Application</button>
 
-    </form>
+    </form> *@
 
 </div>
