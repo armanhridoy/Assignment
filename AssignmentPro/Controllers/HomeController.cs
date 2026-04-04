@@ -29,10 +29,16 @@ namespace AssignmentPro.Controllers
 
             return View(data);
         }
+
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Apply(long jobId, CancellationToken cancellationToken)
-          {
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                // ? Pass returnUrl via query (BEST way)
+                var returnUrl = Url.Action("Apply", "Home", new { jobId });
+                return RedirectToAction("Login", "Account", new { returnUrl });
+            }
 
             var userId = long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 

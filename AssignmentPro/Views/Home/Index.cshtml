@@ -1,115 +1,4 @@
-﻿@* @model IEnumerable<AssignmentPro.Models.Job>
-
-<style>
-    body {
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        font-family: 'Segoe UI', sans-serif;
-        color: #fff;
-    }
-
-    .container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 25px;
-        padding: 40px;
-    }
-
-    .job-card {
-        background: rgba(255, 255, 255, 0.07);
-        border-radius: 20px;
-        padding: 25px;
-        backdrop-filter: blur(12px);
-        transition: 0.4s;
-        position: relative;
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .job-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-
-    .status {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        background: #00f2fe;
-        color: #000;
-    }
-
-    .title {
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .desc {
-        font-size: 14px;
-        color: #ccc;
-        margin-bottom: 15px;
-    }
-
-    .meta {
-        font-size: 13px;
-        margin-bottom: 15px;
-        color: #aaa;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 10px 15px;
-        border-radius: 12px;
-        background: linear-gradient(45deg, #00f2fe, #4facfe);
-        color: #000;
-        font-weight: bold;
-        text-decoration: none;
-        transition: 0.3s;
-    }
-
-    .btn:hover {
-        background: linear-gradient(45deg, #7367f0, #00f2fe);
-        color: #fff;
-    }
-</style>
-
-<div class="container">
-
-    @foreach (var job in Model)
-    {
-        <div class="job-card">
-
-            <div class="status">@job.Status</div>
-
-            <div class="title">@job.JobTitle</div>
-
-            <div class="desc">
-                @(job.Description?.Length > 100
-                            ? job.Description.Substring(0, 100) + "..."
-                            : job.Description)
-        </div>
-
-            <div class="meta">
-                💰 @job.SalaryRange <br />
-                📅 Deadline: @(job.Deadline?.ToString("dd MMM yyyy") ?? "N/A") <br />
-                🕒 Posted: @job.CreatedAt.ToString("dd MMM yyyy")
-            </div>
-
-        @if (@job.Status == "Active")
-            {
-                <a href="/home/Details/@job.JobID" class="btn">View Details</a>
-            }
-
-        </div>
-        }
-
-</div>
-
- *@
-
-@model IEnumerable<AssignmentPro.Models.Job>
+﻿@model IEnumerable<AssignmentPro.Models.Job>
 
 <style>
     body {
@@ -160,20 +49,30 @@
         border-radius: 20px;
         font-size: 12px;
         font-weight: bold;
-        background: #00f2fe;
         color: #000;
     }
+
+        .status.active {
+            background: #00f2fe;
+        }
+
+        .status.new {
+            background: #ff4c4c;
+        }
+    /* Red for new jobs */
     .title {
         font-size: 22px;
         font-weight: bold;
         margin-bottom: 10px;
     }
+
     .desc {
         font-size: 14px;
         color: #ccc;
         margin-bottom: 15px;
         line-height: 1.5;
     }
+
     .meta {
         font-size: 13px;
         margin-bottom: 20px;
@@ -196,6 +95,7 @@
             background: linear-gradient(45deg, #7367f0, #00f2fe);
             color: #fff;
         }
+
     .no-jobs {
         text-align: center;
         font-size: 18px;
@@ -216,9 +116,13 @@
     {
         @foreach (var job in Model)
         {
+            var isNew = job.CreatedAt >= DateTime.Now.AddDays(-7);
+            var statusClass = isNew ? "new" : "active";
             <div class="job-card">
 
-                <div class="status">@job.Status</div>
+                <div class="status @statusClass">
+                    @(isNew ? "New" : job.Status)
+                </div>
 
                 <div class="title">@job.JobTitle</div>
 
@@ -227,28 +131,22 @@
                                 ? job.Description.Substring(0, 100) + "..."
                                 : job.Description)
         </div>
+        <div class="meta">
+            💰 @job.SalaryRange <br />
+            📅 Deadline: @(job.Deadline?.ToString("dd MMM yyyy") ?? "N/A") <br />
+            🕒 Posted: @job.CreatedAt.ToString("dd MMM yyyy")
+        </div>
 
-                <div class="meta">
-                    💰 @job.SalaryRange <br />
-                    📅 Deadline: @(job.Deadline?.ToString("dd MMM yyyy") ?? "N/A") <br />
-                    🕒 Posted: @job.CreatedAt.ToString("dd MMM yyyy")
-                </div>
-
-                @if (job.Status == "Active" && job.Deadline >= DateTime.Now)
-                    {
-                        <a href="/home/Details/@job.JobID" class="btn">View Details</a>
-                    }
-                else if (job.Deadline < DateTime.Now)
-                    {
-                        <span class="btn" style="background: gray; cursor: not-allowed;">Expired</span>
-                    }
-                @*  @if (job.Status == "Active")
+        @if (job.Status == "Active" && job.Deadline >= DateTime.Now)
                 {
                     <a href="/home/Details/@job.JobID" class="btn">View Details</a>
-                }*@
+                }
+                else if (job.Deadline < DateTime.Now)
+                {
+                    <span class="btn" style="background: gray; cursor: not-allowed;">Expired</span>
+                }
 
-            </div> 
+            </div>
         }
     }
-
 </div>

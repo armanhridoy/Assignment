@@ -26,7 +26,7 @@ public class JobRepository : IJobRepository
     }
     public async Task<IEnumerable<Job>> GetAllJobAsync(CancellationToken cancellationToken)
     {
-        var data = await _context.Jobs.ToListAsync(cancellationToken);
+        var data = await _context.Jobs.OrderByDescending(x=>x.CreatedAt).ToListAsync(cancellationToken);
         if(data != null)
         {
             return data;

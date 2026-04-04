@@ -51,35 +51,45 @@ namespace AssignmentPro.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
-
-
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
                 return View(model);
 
             var retult = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+
             if (retult.Succeeded)
             {
-                return LocalRedirect("~/Home/Index");
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && await _userManager.IsInRoleAsync(user, "Administrator"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // ✅ Safe redirect
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return RedirectToAction("Index", "Home");
             }
+
             return View(model);
-        
-                
         }
 
-            [HttpPost]
+
+
+
+        [HttpPost]
 
             public async Task<IActionResult> Logout()
             {
                 await _signInManager.SignOutAsync();
                 return RedirectToAction("Login", "Account");
-
-
             }
 
         [HttpGet]
@@ -88,10 +98,8 @@ namespace AssignmentPro.Controllers
         {
             return View(new LoginViewModel());
         }
-
-
         [HttpGet]
-            [AllowAnonymous]
+        [AllowAnonymous]
             public IActionResult AccessDenied(string returnUrl = null)
             {
                 ViewData["ReturnUrl"] = returnUrl;

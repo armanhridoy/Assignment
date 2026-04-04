@@ -1,94 +1,44 @@
-﻿//using AssignmentPro.Models;
-//using AssignmentPro.Repository;
-//using Microsoft.AspNetCore.Mvc;
-//using static AssignmentPro.AuthIdentityModel.IdentityModel;
+﻿using AssignmentPro.FilesUpload;
+using AssignmentPro.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using static AssignmentPro.AuthIdentityModel.IdentityModel;
 
-//namespace AssignmentPro.Controllers
-//{
-//    public class UserController : Controller
-//    {
-//        private readonly IUserRepository _userRepository;
-//        public UserController(IUserRepository userRepository)
-//        {
-//            _userRepository = userRepository;
-//        }
+namespace AssignmentPro.Controllers
+{
+    public class UserController(UserManager<User> _userManager,IFileService fileService) : Controller
+    {
+       
+        // Show current user details
+        [HttpGet]
+        public async Task<IActionResult> Details()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+            return View(user);
+        }
 
-//        public async Task<IActionResult> Index( CancellationToken cancellationToken)
-//        {
+        // Upload Profile Image
+        [HttpGet]
+        public IActionResult EditProfile() => View();
 
-//            var data = await _userRepository.GetAllUserAsync(cancellationToken);
-//            return View(data);
-//        }
-//        [HttpGet]
-//        public async Task<IActionResult> CreateOrEdit(string id, CancellationToken cancellationToken)
-//        {
-//            if (string.IsNullOrEmpty(id))
-//            {
-//                return View(new User());
-//            }
-//            else
-//            {
-//                var data = await _userRepository.GetUserByIdAsync(id, cancellationToken);
-//                if (data != null)
-//                {
-//                    return View(data);
-//                }
-//                return NotFound();
-//            }
-//        }
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(IFormFile? ProfileImage, string FullName)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
 
+            if (ProfileImage != null && ProfileImage.Length > 0)
+            {
+                user.ImageUrl = await fileService.Upload(ProfileImage, "Images");
+            }
 
-//        //[HttpPost]
-//        //public async Task<IActionResult> CreateOrEdit(User user, CancellationToken cancellationToken)
-//        //{
-//        //    if (string.IsNullOrEmpty(user.UserID))
-//        //    {
-                
-//        //        await _userRepository.AddUserAsync(user, cancellationToken);
-//        //        return RedirectToAction("Index");
-//        //    }
-//        //    else
-//        //    {
-                
-//        //        await _userRepository.UpdateUserAsync(user, cancellationToken);
-//        //        return RedirectToAction("Index");
-//        //    }
+            if (!string.IsNullOrEmpty(FullName))
+                user.UserName = FullName;
 
-           
+            await _userManager.UpdateAsync(user);
 
-//        //}
-//        [HttpGet]
-//        public async Task<IActionResult> Details(string id, CancellationToken cancellationToken)
-//        {
-//            var data = await _userRepository.GetUserByIdAsync(id, cancellationToken);
-//            if (data == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(data);
-//        }
-
-//        //[HttpGet]
-//        //public async Task<IActionResult> Details(string id, CancellationToken cancellationToken)
-//        //{
-//        //    var data = await _userRepository.GetUserByIdAsync(id, cancellationToken);
-//        //    if (data == null)
-//        //    {
-//        //        return NotFound();
-//        //    }
-//        //    return View(data);
-//        //}
-
-//        [HttpGet]
-//        public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
-//        {
-//            var data = await _userRepository.GetUserByIdAsync(id, cancellationToken);
-//            if (data == null)
-//            {
-//                return NotFound();
-//            }
-//            await _userRepository.DeleteUserAsync(id, cancellationToken);
-//            return RedirectToAction("Index");
-//        }
-//    }
-//}
+            return RedirectToAction("Details");
+        }
+    }
+}

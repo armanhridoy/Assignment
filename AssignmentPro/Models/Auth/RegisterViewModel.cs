@@ -21,6 +21,5 @@ public class RegisterViewModel
     [StringLength(20)]
     public string PhoneNumber { get; set; }
 
-   
-    
+    public IFormFile ImageFile { get; set; }
 }

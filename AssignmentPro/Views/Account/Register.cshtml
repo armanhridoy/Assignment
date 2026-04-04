@@ -163,7 +163,54 @@
 
     <div class="title">🚀 Create Your Account</div>
 
-    <form asp-action="Register" method="post">
+
+    <form asp-action="Register" method="post" enctype="multipart/form-data">
+
+        <div class="row">
+
+            <div class="col-md-6 form-group">
+                <label>FullName</label>
+                <i class="form-icon">👤</i>
+                <input asp-for="Name" class="form-control" placeholder="Enter FullName" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Email</label>
+                <i class="form-icon">📧</i>
+                <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Password</label>
+                <i class="form-icon">🔒</i>
+                <input asp-for="PasswordHash" type="password" class="form-control" placeholder="Enter password" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Phone</label>
+                <i class="form-icon">📱</i>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Phone number" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Profile Image</label>
+                <i class="form-icon">🖼️</i>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn-submit">Create Account</button>
+
+        <div class="footer-text">
+            Already have an account? <a href="/Account/Login">Login</a>
+        </div>
+
+    </form>
+
+
+
+   @*  <form asp-action="Register" method="post">
 
         <div class="row">
 
@@ -191,6 +238,8 @@
                 <input asp-for="PhoneNumber" class="form-control" placeholder="Phone number" />
             </div>
 
+            
+
         </div>
 
         <button type="submit" class="btn-submit">Create Account</button>
@@ -199,6 +248,6 @@
             Already have an account? <a href="/Account/Login">Login</a>
         </div>
 
-    </form>
+    </form> *@
 
 </div>

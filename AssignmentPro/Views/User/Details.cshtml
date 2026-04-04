@@ -1,59 +1,17 @@
-﻿@* @model AssignmentPro.Models.User
+﻿@using static AssignmentPro.AuthIdentityModel.IdentityModel
+@model User
 
-@{
-    ViewData["Title"] = "User Details";
-}
+<h2>User Details</h2>
 
-<h1>User Details</h1>
-
-<table class="table table-bordered">
-    <tr>
-        <th>User ID</th>
-        <td>@Model.UserID</td>
-    </tr>
-    <tr>
-        <th>Name</th>
-        <td>@Model.Name</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>@Model.Email</td>
-    </tr>
-    <tr>
-        <th>Phone</th>
-        <td>@Model.PhoneNumber</td>
-    </tr>
-    <tr>
-        <th>Present Salary</th>
-        <td>@(Model.PresentSalary.HasValue? Model.PresentSalary.Value.ToString("0.00") : "-")</td>
-    </tr>
-    <tr>
-        <th>Degree</th>
-        <td>@Model.Degree</td>
-    </tr>
-    <tr>
-        <th>University</th>
-        <td>@Model.University</td>
-    </tr>
-    <tr>
-        <th>CGPA</th>
-        <td>@(Model.CGPA.HasValue? Model.CGPA.Value.ToString("0.00") : "-")</td>
-    </tr>
-    <tr>
-        <th>Completion Year</th>
-        <td>@(Model.CompletionYear.HasValue? Model.CompletionYear.Value.ToString() : "-")</td>
-    </tr>
-    <tr>
-        <th>Resume Path</th>
-        <td>@Model.ResumePath</td>
-    </tr>
-    <tr>
-        <th>Created At</th>
-        <td>@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-    </tr>
-</table>
+<p><strong>Full Name:</strong> @Model.UserName</p>
+<p><strong>Email:</strong> @Model.Email</p>
 
 <p>
-    <a asp-action="CreateOrEdit" asp-route-id="@Model.UserID" class="btn btn-primary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</p> *@
+    <strong>Profile Image:</strong><br />
+    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ?
+                 "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" :
+                          Url.Content("~/Images/" + Model.ImageUrl))"
+         style="width:150px;height:150px;object-fit:cover;border-radius:50%;" />
+</p>
+
+<a asp-controller="User" asp-action="EditProfile" class="btn btn-primary mt-3">Edit Profile</a>

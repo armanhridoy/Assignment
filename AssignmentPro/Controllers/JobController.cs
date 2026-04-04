@@ -72,4 +72,16 @@ public class JobController : Controller
         await _jobRepository.DeleteJob(id, cancellationToken);
         return RedirectToAction("Index");
     }
+    [HttpPost]
+    public async Task<IActionResult>ToggleStatus(long JobId,bool statusToggle,CancellationToken cancellationToken)
+    {
+        var job = await _jobRepository.GetJobByIdAsync(JobId.ToString(), cancellationToken);
+        if (job == null)
+            return NotFound();
+        job.Status = statusToggle ? "Open" : "Close";
+
+        await _jobRepository.UpdateJobAsync(job, cancellationToken);
+
+        return RedirectToAction("Index");
+    }
 }

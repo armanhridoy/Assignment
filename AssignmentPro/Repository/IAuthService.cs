@@ -47,10 +47,11 @@ public class AuthService : IAuthService
 
         var user = new User
         {
-            UserName = request.Email,
+            UserName = request.Name,
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
-            CreatedAt=DateTime.Now,
+            ImageUrl= request.ImageFile != null ? await _fileService.Upload(request.ImageFile, "Images") : null,
+            CreatedAt =DateTime.Now,
             EmailConfirmed = true,
             SecurityStamp = Guid.NewGuid().ToString(),
             UserId= await _userIdService.GetNextUserIdAsync<User>(x => x.UserId)
